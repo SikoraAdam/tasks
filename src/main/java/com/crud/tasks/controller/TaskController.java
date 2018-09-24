@@ -4,9 +4,11 @@ import com.crud.tasks.domain.TaskDto;
 import com.crud.tasks.mapper.TaskMapper;
 import com.crud.tasks.service.DbService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+
 
 @RestController
 @RequestMapping("/v1/task")
@@ -24,7 +26,7 @@ public class TaskController {
 
     @RequestMapping(method = RequestMethod.GET, value = "getTask")
     public TaskDto getTask(Long taskId) {
-        return taskMapper.mapToTaskDto(service.getTaskById(2L));
+        return taskMapper.mapToTaskDto(service.getTaskById(1L));
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "deleteTask")
@@ -37,8 +39,8 @@ public class TaskController {
         return new TaskDto(1L, "Edited test title", "test content");
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "createTask")
-    public void createTask(TaskDto taskDto) {
-
+    @RequestMapping(method = RequestMethod.POST, value = "createTask", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void createTask(@RequestBody TaskDto taskDto) {
+        service.saveTask(taskMapper.mapToTask(taskDto));
     }
 }

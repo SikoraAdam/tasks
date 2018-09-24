@@ -25,4 +25,8 @@ public class DbService {
 
         return matchingTask.orElse(null);
     }
+
+    public Task saveTask(final Task task) {
+        return repository.save(task);
+    }
 }
