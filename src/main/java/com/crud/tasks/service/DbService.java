@@ -20,13 +20,6 @@ public class DbService {
         return repository.findAll();
     }
 
-    /*
-    #Module 15.2#
-    public Task getTaskById(Long id) {
-        Optional<Task> matchingTask = repository.findById(id).stream().findAny();
-        return matchingTask.orElse(null);
-    }*/
-
     public Task saveTask(final Task task) {
         return repository.save(task);
     }
