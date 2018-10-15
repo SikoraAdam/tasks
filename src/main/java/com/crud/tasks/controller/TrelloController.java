@@ -33,16 +33,20 @@ public class TrelloController {
 
             trelloBoardDto.getLists().forEach(trelloList ->
                     System.out.println(trelloList.getName() + " - " + trelloList.getId() + " - " + trelloList.isClosed()));
-
         });
+
+    //Module_18.2
+    /*
+    trelloBoards.stream()
+             .filter(trelloBoardDto -> trelloBoardDto.getId() != null)
+            .filter(trelloBoardDto -> trelloBoardDto.getName() != null)
+            .filter(trelloBoardDto -> trelloBoardDto.getName().contains(KODILLA))
+            .forEach(trelloBoardDto -> System.out.println(trelloBoardDto.getId() + " " + trelloBoardDto.getName()));
+    */
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "createTrelloCard")
     public CreatedTrelloCard createTrelloCard (@RequestBody TrelloCardDto trelloCardDto) {
-
-
-
         return  trelloClient.createNewCard(trelloCardDto);
     }
-
 }
