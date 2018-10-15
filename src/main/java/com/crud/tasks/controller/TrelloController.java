@@ -38,7 +38,7 @@ public class TrelloController {
     //Module_18.2
     /*
     trelloBoards.stream()
-             .filter(trelloBoardDto -> trelloBoardDto.getId() != null)
+            .filter(trelloBoardDto -> trelloBoardDto.getId() != null)
             .filter(trelloBoardDto -> trelloBoardDto.getName() != null)
             .filter(trelloBoardDto -> trelloBoardDto.getName().contains(KODILLA))
             .forEach(trelloBoardDto -> System.out.println(trelloBoardDto.getId() + " " + trelloBoardDto.getName()));
