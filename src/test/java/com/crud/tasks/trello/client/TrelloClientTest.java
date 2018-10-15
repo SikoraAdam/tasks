@@ -2,6 +2,7 @@ package com.crud.tasks.trello.client;
 
 import com.crud.tasks.domain.TrelloBoardDto;
 import com.crud.tasks.trello.config.TrelloConfig;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -29,17 +30,21 @@ public class TrelloClientTest {
     @Mock
     TrelloConfig trelloConfig;
 
-    @Test
-    public void shouldFetchTrelloBoards() throws URISyntaxException {
-        // Given
+    @Before
+    public void init() {
         when(trelloConfig.getTrelloApiEndpoint()).thenReturn("http://test.com");
         when(trelloConfig.getTrelloAppKey()).thenReturn("test");
         when(trelloConfig.getTrelloToken()).thenReturn("test");
+    }
 
+    @Test
+    public void shouldFetchTrelloBoards() throws URISyntaxException {
+
+        // Given
         TrelloBoardDto[] trelloBoards = new TrelloBoardDto[1];
         trelloBoards[0] = new TrelloBoardDto("test_board", "test_id", new ArrayList<>());
 
-        URI uri = new URI("http://test.com/members/mariatworkiewicz/boards?key=test&token=test&fields=name,id&lists=all");
+        URI uri = new URI("http://test.com/members/adamsikora7/boards?key=test&token=test&fields=name,id&lists=all");
 
         when(restTemplate.getForObject(uri, TrelloBoardDto[].class)).thenReturn(trelloBoards);
         //When
