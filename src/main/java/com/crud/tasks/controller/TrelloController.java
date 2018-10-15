@@ -16,6 +16,8 @@ public class TrelloController {
     @Autowired
     private TrelloClient trelloClient;
 
+    private static final String KODILLA = "Kodilla";
+
     @RequestMapping(method = RequestMethod.GET, value = "getTrelloBoards")
     public void getTrelloBoards() {
 
@@ -25,9 +27,12 @@ public class TrelloController {
         //trelloBoards.forEach(trelloBoardDto -> System.out.println(trelloBoardDto.getId() + " " + trelloBoardDto.getName()));
 
         //Module_18.2
-        trelloBoards.stream().filter(trelloBoardDto -> !trelloBoardDto.getId().isEmpty()
-                && (!trelloBoardDto.getName().isEmpty() || trelloBoardDto.getName().contains("Kodilla")))
+        trelloBoards.stream()
+                .filter(trelloBoardDto -> trelloBoardDto.getId() != null)
+                .filter(trelloBoardDto -> trelloBoardDto.getName() != null)
+                .filter(trelloBoardDto -> trelloBoardDto.getName().contains(KODILLA))
                 .forEach(trelloBoardDto -> System.out.println(trelloBoardDto.getId() + " " + trelloBoardDto.getName()));
+
 
     }
 }
