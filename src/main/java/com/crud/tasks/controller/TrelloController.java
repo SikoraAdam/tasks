@@ -35,11 +35,6 @@ public class TrelloController {
                     System.out.println(trelloList.getName() + " - " + trelloList.getId() + " - " + trelloList.isClosed()));
 
         });
-        //Module_18.2
-        /*trelloBoards.stream().filter(trelloBoardDto -> !trelloBoardDto.getId().isEmpty()
-                && (!trelloBoardDto.getName().isEmpty() || trelloBoardDto.getName().contains("Kodilla")))
-                .forEach(trelloBoardDto -> System.out.println(trelloBoardDto.getId() + " " + trelloBoardDto.getName()));
-        */
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "createTrelloCard")
