@@ -22,7 +22,7 @@ public class DbService {
     }
 
     public Task saveTask(final Task task) {
-        log.info("saveTask... {}", task);
+        log.info("saveTask {}", task);
         return repository.save(task);
     }
 

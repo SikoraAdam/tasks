@@ -43,7 +43,7 @@ public class TaskController {
 
     @RequestMapping(method = RequestMethod.POST, value = "createTask", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void createTask(@RequestBody TaskDto taskDto) {
-        log.info("createTask... {}", taskDto);
+        log.info("createTask {}", taskDto);
         service.saveTask(taskMapper.mapToTask(taskDto));
     }
 }
