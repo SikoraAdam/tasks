@@ -29,6 +29,6 @@ public class EmailScheduler {
                 adminConfig.getAdminMail(),
                 "adam.x.sikora@gmail.com",
                 SUBJECT,
-                String.format("Currently in database you got: %d %s", size, size == 1 ? "task" : "tasks")));
+                String.format("Currently in database you got: " + size + (size == 1 ? "task" : "tasks"))));
     }
 }
