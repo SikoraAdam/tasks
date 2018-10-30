@@ -14,6 +14,8 @@ public class EmailScheduler {
     private static final String SUBJECT = "Tasks: Once a day email";
     private static final String CC = "adam.x.sikora@gmail.com";
     private static final int ONE_TASK = 1;
+    private static final String SINGLE_TASK = "task";
+    private static final String MULTIPLE_TASK = "tasks";
 
     @Autowired
     private SimpleEmailService emailService;
@@ -24,7 +26,9 @@ public class EmailScheduler {
     @Autowired
     private AdminConfig adminConfig;
 
-    //@Scheduled(cron = "0 0 10 * * *")
+    /**
+     *  zakomentowane żeby nie chodziło w nieskończoność
+     */
     //@Scheduled(fixedDelay = 10000)
     public void sendInformationEmail() {
         long size = taskRepository.count();
@@ -32,6 +36,6 @@ public class EmailScheduler {
                 adminConfig.getAdminMail(),
                 CC,
                 SUBJECT,
-                String.format("Currently in database you got: " + size + (size == ONE_TASK ? "task" : "tasks"))));
+                "Currently in database you got: " + size + (size == ONE_TASK ? SINGLE_TASK : MULTIPLE_TASK)));
     }
 }
