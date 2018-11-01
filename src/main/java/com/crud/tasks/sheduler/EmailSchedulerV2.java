@@ -4,12 +4,14 @@ import com.crud.tasks.config.AdminConfig;
 import com.crud.tasks.domain.Mail;
 import com.crud.tasks.repository.TaskRepository;
 import com.crud.tasks.service.SimpleEmailService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EmailScheduler {
+@AllArgsConstructor
+public class EmailSchedulerV2 {
 
     private static final String SUBJECT = "Tasks: Once a day email";
     private static final String CC = "adam.x.sikora@gmail.com";
@@ -17,13 +19,8 @@ public class EmailScheduler {
     private static final String SINGLE_TASK = "task";
     private static final String MULTIPLE_TASK = "tasks";
 
-    @Autowired
     private SimpleEmailService emailService;
-
-    @Autowired
     private TaskRepository taskRepository;
-
-    @Autowired
     private AdminConfig adminConfig;
 
     /**
