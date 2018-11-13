@@ -1,8 +1,10 @@
 package com.crud.tasks.controller;
 
-import com.crud.tasks.domain.*;
+import com.crud.tasks.domain.Task;
+import com.crud.tasks.domain.TaskDto;
 import com.crud.tasks.mapper.TaskMapper;
 import com.crud.tasks.service.DbService;
+import com.google.gson.Gson;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -20,15 +22,20 @@ import java.util.Optional;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(TaskController.class)
 public class TaskControllerTest {
+
+    Gson gson = new Gson();
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -86,4 +93,27 @@ public class TaskControllerTest {
 
         Mockito.verify(service, times(1)).deleteTask(Long.MAX_VALUE);
     }
+
+    @Test
+    public void createTask() throws Exception {
+
+        // Given
+        Task task = new Task(Long.MAX_VALUE, "Test Title", "Test Content");
+        TaskDto taskDto = new TaskDto(Long.MAX_VALUE, "Test Title", "Test Content");
+
+        when(taskMapper.mapToTask(taskDto)).thenReturn(task);
+        String jsonContent = gson.toJson(taskDto);
+
+
+        // When & Then
+        mockMvc.perform(post("http://localhost:8080/v1/task/createTask")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonContent))
+                .andExpect(status().isOk());
+
+        verify(taskMapper, times(1)).mapToTask(taskDto);
+        verify(service, times(1)).saveTask(task);
+    }
+
+
 }
