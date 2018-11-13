@@ -30,6 +30,10 @@ public class DbService {
         return repository.findById(id);
     }
 
+    public boolean taskExist (final Long id) {
+            return repository.findById(id).isPresent();
+    }
+
     @Transactional
     public void deleteTask(final Long id) {
         repository.deleteById(id);
