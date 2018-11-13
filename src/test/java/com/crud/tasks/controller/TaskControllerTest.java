@@ -113,6 +113,7 @@ public class TaskControllerTest {
 
     @Test
     public void updateTaskTest() throws Exception {
+
         // Given
         Task task = new Task(Long.MAX_VALUE, "Test Title", "Test Content");
         TaskDto taskDto = new TaskDto(Long.MAX_VALUE, "Test Title", "Test Content");
