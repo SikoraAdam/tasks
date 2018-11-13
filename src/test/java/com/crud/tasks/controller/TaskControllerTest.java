@@ -3,6 +3,7 @@ package com.crud.tasks.controller;
 import com.crud.tasks.domain.*;
 import com.crud.tasks.mapper.TaskMapper;
 import com.crud.tasks.service.DbService;
+import com.google.gson.Gson;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -20,9 +21,9 @@ import java.util.Optional;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -37,6 +38,8 @@ public class TaskControllerTest {
 
     @MockBean
     private TaskMapper taskMapper;
+
+    Gson gson = new Gson();
 
     @Test
     public void getTasksTest() throws Exception {
@@ -84,6 +87,49 @@ public class TaskControllerTest {
         mockMvc.perform(delete("http://localhost:8080/v1/task/deleteTask?taskId=" + Long.MAX_VALUE).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        Mockito.verify(service, times(1)).deleteTask(Long.MAX_VALUE);
+        verify(service, times(1)).deleteTask(Long.MAX_VALUE);
+    }
+
+    @Test
+    public void createTaskTest() throws Exception {
+
+        // Given
+        Task task = new Task(Long.MAX_VALUE, "Test Title", "Test Content");
+        TaskDto taskDto = new TaskDto(Long.MAX_VALUE, "Test Title", "Test Content");
+
+        when(taskMapper.mapToTask(taskDto)).thenReturn(task);
+        String jsonContent = gson.toJson(taskDto);
+
+
+        // When & Then
+        mockMvc.perform(post("http://localhost:8080/v1/task/createTask")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonContent))
+                .andExpect(status().isOk());
+
+        verify(taskMapper, times(1)).mapToTask(taskDto);
+        verify(service, times(1)).saveTask(task);
+    }
+
+    @Test
+    public void updateTaskTest() throws Exception {
+        // Given
+        Task task = new Task(Long.MAX_VALUE, "Test Title", "Test Content");
+        TaskDto taskDto = new TaskDto(Long.MAX_VALUE, "Test Title", "Test Content");
+
+        when(service.taskExist(Long.MAX_VALUE)).thenReturn(true);
+        when(service.saveTask(task)).thenReturn(task);
+        when(taskMapper.mapToTaskDto(task)).thenReturn(taskDto);
+        when(taskMapper.mapToTask(taskDto)).thenReturn(task);
+        String jsonContent = gson.toJson(taskDto);
+
+        // When & Then
+        mockMvc.perform(put("http://localhost:8080/v1/task/updateTask").contentType(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonContent))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(Long.valueOf(Long.MAX_VALUE))))
+                .andExpect(jsonPath("$.title", is("Test Title")))
+                .andExpect(jsonPath("$.content", is("Test Content")));
     }
 }
