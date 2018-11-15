@@ -43,6 +43,7 @@ public class TaskControllerTest {
 
     @Test
     public void getTasksTest() throws Exception {
+
         // Given
         Task task = new Task(Long.MAX_VALUE, "Test Title", "Test Content");
         List<Task> tasks = Arrays.asList(task);
@@ -63,6 +64,7 @@ public class TaskControllerTest {
 
     @Test
     public void getTaskByIdTest() throws Exception {
+
         // Given
         Task task = new Task(Long.MAX_VALUE, "Test Title", "Test Content");
         TaskDto taskDto = new TaskDto(Long.MAX_VALUE, "Test Title", "Test Content");
@@ -80,6 +82,7 @@ public class TaskControllerTest {
 
     @Test
     public void deleteTaskByIdTest() throws Exception {
+
         // Given
         when(service.taskExist(Long.MAX_VALUE)).thenReturn(true);
 
