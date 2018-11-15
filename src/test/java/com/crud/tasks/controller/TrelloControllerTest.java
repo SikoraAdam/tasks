@@ -39,10 +39,22 @@ public class TrelloControllerTest {
     @MockBean
     private TrelloFacade trelloFacade;
 
-    Gson gson = new Gson();
+    @Test
+    public void shouldFetchEmptyTrelloBoards() throws Exception {
+
+        // Given
+        List<TrelloBoardDto> trelloBoards = new ArrayList<>();
+
+        when(trelloFacade.fetchTrelloBoards()).thenReturn(trelloBoards);
+
+        // When & Then
+        mockMvc.perform(get("http://localhost:8080/v1/trello/getTrelloBoards").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(200)) //or isOk()
+                .andExpect(jsonPath("$", hasSize(0)));
+    }
 
     @Test
-    public void getTrelloBoardsTest() throws Exception {
+    public void shouldFetchTrelloBoards() throws Exception {
 
         // Given
         List<TrelloListDto> trelloLists = new ArrayList<>();
@@ -55,9 +67,11 @@ public class TrelloControllerTest {
         // When & Then
         mockMvc.perform(get("http://localhost:8080/v1/trello/getTrelloBoards").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                // Trello boards fields
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].id", is("1")))
                 .andExpect(jsonPath("$[0].name", is("Test Task")))
+                // Trello lists fields
                 .andExpect(jsonPath("$[0].lists", hasSize(1)))
                 .andExpect(jsonPath("$[0].lists[0].id", is("1")))
                 .andExpect(jsonPath("$[0].lists[0].name", is("Test List")))
@@ -65,23 +79,23 @@ public class TrelloControllerTest {
     }
 
     @Test
-    public void createTrelloCardTest() throws Exception {
-
+    public void shouldCreateTrelloCard() throws Exception {
         // Given
-        TrelloCardDto trelloCardDto = new TrelloCardDto("name", "description", "pos", "listId");
-        CreatedTrelloCardDto createdTrelloCardDto = new CreatedTrelloCardDto("123", "Test", "url");
+        TrelloCardDto trelloCardDto = new TrelloCardDto("Test", "Test description", "top", "1");
+        CreatedTrelloCardDto createdTrelloCardDto = new CreatedTrelloCardDto("323", "Test", "http://test.com");
 
         when(trelloFacade.createCard(any(TrelloCardDto.class))).thenReturn(createdTrelloCardDto);
 
+        Gson gson = new Gson();
         String jsonContent = gson.toJson(trelloCardDto);
 
         // When & Then
         mockMvc.perform(post("http://localhost:8080/v1/trello/createTrelloCard")
                 .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
                 .content(jsonContent))
-                .andExpect(jsonPath("$.id", is("123")))
+                .andExpect(jsonPath("$.id", is("323")))
                 .andExpect(jsonPath("$.name", is("Test")))
-                .andExpect(jsonPath("$.shortUrl", is("url")));
-
+                .andExpect(jsonPath("$.shortUrl", is("http://test.com")));
     }
 }
