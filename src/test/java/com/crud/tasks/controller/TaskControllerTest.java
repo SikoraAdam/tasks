@@ -106,6 +106,7 @@ public class TaskControllerTest {
         // When & Then
         mockMvc.perform(post("http://localhost:8080/v1/task/createTask")
                 .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
                 .content(jsonContent))
                 .andExpect(status().isOk());
 
