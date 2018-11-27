@@ -43,7 +43,7 @@ public class SimpleEmailService {
         return mailMessage;
     }
 
-
+    // Zmiana w Module_24.3
     private MimeMessagePreparator createMimeMessage(final Mail mail, final String mailType) {
         return mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);

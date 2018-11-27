@@ -54,6 +54,7 @@ public class MailCreatorService {
         return templateEngine.process("mail/created-trello-card-mail", context);
     }
 
+    // Zmiana w Module_24.3
     public String tasksCountEmail(String message) {
 
         List<Task> tasks;
@@ -78,6 +79,7 @@ public class MailCreatorService {
         return templateEngine.process("mail/available-tasks-count-mail", context);
     }
 
+    // Zmiana w Module_24.3
     public String makeEmail(final String message, final String mailType) {
         switch (mailType) {
             case NEW_TRELLO_CARD_MAIL:

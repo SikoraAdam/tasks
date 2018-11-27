@@ -32,6 +32,7 @@ public class TrelloService {
         return trelloClient.getTrelloBoards();
     }
 
+    // Zmiana w Module_24.3
     public CreatedTrelloCardDto createTrelloCard (TrelloCardDto trelloCardDto) {
         CreatedTrelloCardDto newCard = trelloClient.createNewCard(trelloCardDto);
 
