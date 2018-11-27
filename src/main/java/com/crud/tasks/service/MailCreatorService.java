@@ -60,7 +60,7 @@ public class MailCreatorService {
         tasks = taskRepository.findAll();
 
         Context context = new Context();
-        context.setVariable("message", "Below you can find link to tasks database");
+        context.setVariable("message", "message");
         context.setVariable("tasks_url", "http://localhost:8888/tasks_frontend");
         context.setVariable("button", "Visit website");
         context.setVariable("admin_name", adminConfig.getAdminName());
@@ -74,7 +74,7 @@ public class MailCreatorService {
         context.setVariable("show_button", true);
         context.setVariable("is_friend", false);
         context.setVariable("admin_config", adminConfig);
-        context.setVariable("tasks_count", "Tasks available: "+ tasks.size());
+        context.setVariable("tasks", tasks);
         return templateEngine.process("mail/available-tasks-count-mail", context);
     }
 
