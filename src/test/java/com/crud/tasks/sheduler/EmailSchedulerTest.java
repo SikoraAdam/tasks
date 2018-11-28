@@ -46,7 +46,7 @@ public class EmailSchedulerTest {
         emailScheduler.sendInformationEmail();
 
         //Then
-        verify(simpleEmailService, times(1)).send(mailArgumentCaptor.capture());
+        verify(simpleEmailService, times(1)).send(mailArgumentCaptor.capture(), "AVAILABLE_TASKS_MAIL");
         Mail captoredMail = mailArgumentCaptor.getValue();
         assertThat(captoredMail.getMailTo()).isEqualTo("mockAdminMail");
         assertThat(captoredMail.getToCc()).isEqualTo("adam.x.sikora@gmail.com");
@@ -65,7 +65,7 @@ public class EmailSchedulerTest {
         emailScheduler.sendInformationEmail();
 
         //Then
-        verify(simpleEmailService, times(1)).send(mailArgumentCaptor.capture());
+        verify(simpleEmailService, times(1)).send(mailArgumentCaptor.capture(), "AVAILABLE_TASKS_MAIL");
         Mail captoredMail = mailArgumentCaptor.getValue();
         assertThat(captoredMail.getMailTo()).isEqualTo("mockAdminMail");
         assertThat(captoredMail.getToCc()).isEqualTo("adam.x.sikora@gmail.com");
