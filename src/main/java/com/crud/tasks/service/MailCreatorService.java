@@ -42,40 +42,37 @@ public class MailCreatorService {
         context.setVariable("admin_name", adminConfig.getAdminName());
         context.setVariable("preview_message", "Trello card create");
         context.setVariable("goodbye_message", "Have a nice day");
-        context.setVariable("company_details",
-                adminConfig.getCompanyName() +
-                        "\n" + adminConfig.getCompanyPhone() +
-                        "\n" + adminConfig.getCompanyEmail() +
-                        "\n" + adminConfig.getCompanyGoal());
+        context.setVariable("company_name", adminConfig.getCompanyName());
+        context.setVariable("company_email", adminConfig.getCompanyEmail());
+        context.setVariable("company_phone", adminConfig.getCompanyPhone());
+        context.setVariable("company_goal", adminConfig.getCompanyGoal());
         context.setVariable("show_button", false);
         context.setVariable("is_friend", true);
         context.setVariable("admin_config", adminConfig);
         context.setVariable("application_functionality", functionality);
+
         return templateEngine.process("mail/created-trello-card-mail", context);
     }
 
     // Zmiana w Module_24.3
     public String tasksCountEmail(String message) {
 
-        List<Task> tasks;
-        tasks = taskRepository.findAll();
-
         Context context = new Context();
-        context.setVariable("message", "message");
+        context.setVariable("message", message);
         context.setVariable("tasks_url", "http://localhost:8888/tasks_frontend");
         context.setVariable("button", "Visit website");
         context.setVariable("admin_name", adminConfig.getAdminName());
         context.setVariable("preview_message", "Tasks count");
         context.setVariable("goodbye_message", "Have a nice day");
-        context.setVariable("company_details",
-                adminConfig.getCompanyName() +
-                        "\n" + adminConfig.getCompanyPhone() +
-                        "\n" + adminConfig.getCompanyEmail() +
-                        "\n" + adminConfig.getCompanyGoal());
+        context.setVariable("company_name", adminConfig.getCompanyName());
+        context.setVariable("company_email", adminConfig.getCompanyEmail());
+        context.setVariable("company_phone", adminConfig.getCompanyPhone());
+        context.setVariable("company_goal", adminConfig.getCompanyGoal());
         context.setVariable("show_button", true);
         context.setVariable("is_friend", false);
         context.setVariable("admin_config", adminConfig);
-        context.setVariable("tasks", tasks);
+        context.setVariable("tasks", taskRepository.count());
+
         return templateEngine.process("mail/available-tasks-count-mail", context);
     }
 
@@ -90,6 +87,4 @@ public class MailCreatorService {
                 return null;
         }
     }
-
-
 }

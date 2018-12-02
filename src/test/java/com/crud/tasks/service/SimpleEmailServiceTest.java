@@ -32,7 +32,7 @@ public class SimpleEmailServiceTest {
         mailMessage.setText(mail.getMessage());
 
         // When
-        simpleEmailService.send(mail);
+        simpleEmailService.send(mail, MailCreatorService.NEW_TRELLO_CARD_MAIL);
 
         // Then
         verify(javaMailSender, times(1)).send(mailMessage);
