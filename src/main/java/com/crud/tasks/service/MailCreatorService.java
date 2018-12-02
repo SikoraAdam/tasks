@@ -31,6 +31,4 @@ public class MailCreatorService {
         context.setVariable("company_goal", adminConfig.getCompanyGoal());
         return templateEngine.process("mail/created-trello-card-mail", context);
     }
-
-
 }

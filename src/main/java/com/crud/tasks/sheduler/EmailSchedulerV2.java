@@ -3,7 +3,6 @@ package com.crud.tasks.sheduler;
 import com.crud.tasks.config.AdminConfig;
 import com.crud.tasks.domain.Mail;
 import com.crud.tasks.repository.TaskRepository;
-import com.crud.tasks.service.MailCreatorService;
 import com.crud.tasks.service.SimpleEmailService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +33,6 @@ public class EmailSchedulerV2 {
                 adminConfig.getAdminMail(),
                 CC,
                 SUBJECT,
-                "Currently in database you got: " + size + (size == ONE_TASK ? SINGLE_TASK : MULTIPLE_TASK)), MailCreatorService.AVAILABLE_TASKS_MAIL);
+                "Currently in database you got: " + size + (size == ONE_TASK ? SINGLE_TASK : MULTIPLE_TASK)));
     }
 }
