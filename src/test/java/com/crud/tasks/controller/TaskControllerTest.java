@@ -53,7 +53,7 @@ public class TaskControllerTest {
         when(taskMapper.mapToTaskDtoList(tasks)).thenReturn(taskDtos);
 
         // When & Then
-        mockMvc.perform(get("http://localhost:8080/v1/task/getTasks").contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/v1/tasks").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].id", is(Long.valueOf(Long.MAX_VALUE))))
@@ -72,7 +72,7 @@ public class TaskControllerTest {
         when(taskMapper.mapToTaskDto(task)).thenReturn(taskDto);
 
         // When & Then
-        mockMvc.perform(get("http://localhost:8080/v1/task/getTask?taskId=" + Long.MAX_VALUE).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/v1/tasks/" + Long.MAX_VALUE).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(Long.valueOf(Long.MAX_VALUE))))
                 .andExpect(jsonPath("$.title", is("Test Title")))
@@ -86,7 +86,7 @@ public class TaskControllerTest {
         when(service.taskExist(Long.MAX_VALUE)).thenReturn(true);
 
         // When & Then
-        mockMvc.perform(delete("http://localhost:8080/v1/task/deleteTask?taskId=" + Long.MAX_VALUE).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(delete("/v1/tasks/" + Long.MAX_VALUE).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
         verify(service, times(1)).deleteTask(Long.MAX_VALUE);

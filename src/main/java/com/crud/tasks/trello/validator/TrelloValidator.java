@@ -13,6 +13,7 @@ import static java.util.stream.Collectors.toList;
 public class TrelloValidator {
     private static final Logger LOGGER = LoggerFactory.getLogger(TrelloValidator.class);
 
+    /*
     public List<TrelloBoard> validateTrelloBoards(List<TrelloBoard> trelloBoards) {
         LOGGER.info("Starting filtering boards...");
         List<TrelloBoard> filteredBoards = trelloBoards.stream()
@@ -21,7 +22,8 @@ public class TrelloValidator {
         LOGGER.info("Boards have been filtered. Current list size: " + filteredBoards.size());
 
         return filteredBoards;
-    }
+
+    }*/
 
     public void validateCard(final TrelloCard trelloCard) {
         if (trelloCard == null) {
