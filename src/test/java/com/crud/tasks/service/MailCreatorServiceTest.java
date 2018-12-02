@@ -39,7 +39,6 @@ public class MailCreatorServiceTest {
         String template = mailCreatorService.tasksCountEmail(message);
 
         //Then
-        //assertThat(template.)
 
     }
 }
