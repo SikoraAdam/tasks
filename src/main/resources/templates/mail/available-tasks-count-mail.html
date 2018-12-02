@@ -115,7 +115,7 @@
                                             </tr>
                                             </tbody>
                                         </table>
-                                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Currently available tasks</p>
+                                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Currently available tasks:</p>
                                         <ul th:each="task : ${tasks}">
                                             <li th:text="${task.getId()}"></li>
                                             <li th:text="${task.getTitle()}"></li>

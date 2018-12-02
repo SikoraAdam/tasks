@@ -56,6 +56,7 @@ public class MailCreatorService {
 
     // Zmiana w Module_24.3
     public String tasksCountEmail(String message) {
+        List<Task> tasks = taskRepository.findAll();
 
         Context context = new Context();
         context.setVariable("message", message);
@@ -71,7 +72,7 @@ public class MailCreatorService {
         context.setVariable("show_button", true);
         context.setVariable("is_friend", false);
         context.setVariable("admin_config", adminConfig);
-        context.setVariable("tasks", taskRepository.count());
+        context.setVariable("tasks", tasks);
 
         return templateEngine.process("mail/available-tasks-count-mail", context);
     }
