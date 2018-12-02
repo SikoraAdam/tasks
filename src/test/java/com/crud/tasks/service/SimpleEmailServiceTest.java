@@ -25,6 +25,7 @@ public class SimpleEmailServiceTest {
         // Given
         Mail mail = new Mail("test@test.com", "testCC@test.com","Test", "Test message");
 
+
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(mail.getMailTo());
         mailMessage.setCc(mail.getToCc());
@@ -32,7 +33,7 @@ public class SimpleEmailServiceTest {
         mailMessage.setText(mail.getMessage());
 
         // When
-        simpleEmailService.send(mail, MailCreatorService.NEW_TRELLO_CARD_MAIL);
+        simpleEmailService.send(mail, "NEW_TRELLO_CARD_MAIL");
 
         // Then
         verify(javaMailSender, times(1)).send(mailMessage);
