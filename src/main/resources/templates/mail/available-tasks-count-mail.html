@@ -1,8 +1,8 @@
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta name="viewport" content="width=device-width">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Tasks count</title>
     <style>
 
@@ -86,7 +86,7 @@
             <div class="content" style="box-sizing: border-box; display: block; Margin: 0 auto; max-width: 580px; padding: 10px;">
 
                 <!-- START CENTERED WHITE CONTAINER -->
-                <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">th:text="${preview_message}"</span>
+                <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;" th:text="${preview_message}"></span>
                 <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px;">
 
                     <!-- START MAIN CONTENT AREA -->
@@ -115,17 +115,13 @@
                                             </tr>
                                             </tbody>
                                         </table>
-                                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">
-                                            Tasks:
-                                        </p>
+                                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Currently available tasks</p>
                                         <ul th:each="task : ${tasks}">
-                                            <li>
-                                                <p>id:&nbsp;<span th:text="${task.getId()}"></span></p>
-                                                <p>title:&nbsp;<span th:text="${task.getTitle()}"></span></p>
-                                                <p>content:&nbsp;<span th:text="${task.getContent()}"></span></p>
-                                            </li>
+                                            <li th:text="${task.getId()}"></li>
+                                            <li th:text="${task.getTitle()}"></li>
+                                            <li th:text="${task.getContent()}"></li>
                                         </ul>
-                                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">th:text="${goodbye_message}"</p>
+                                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;" th:text="${goodbye_message}"></p>
                                     </td>
                                 </tr>
                             </table>
