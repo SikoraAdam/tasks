@@ -5,6 +5,7 @@ import com.crud.tasks.domain.CreatedTrelloCardDto;
 import com.crud.tasks.domain.Mail;
 import com.crud.tasks.domain.TrelloBoardDto;
 import com.crud.tasks.domain.TrelloCardDto;
+import com.crud.tasks.sheduler.EmailSchedulerV2;
 import com.crud.tasks.trello.client.TrelloClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,9 @@ public class TrelloService {
     @Autowired
     private SimpleEmailService emailService;
 
+    @Autowired
+    private EmailSchedulerV2 emailSchedulerV2;
+
     public List<TrelloBoardDto> fetchTrelloBoards() {
         return trelloClient.getTrelloBoards();
     }
@@ -38,8 +42,12 @@ public class TrelloService {
 
         final String tpl = "New card \"%s\" has been created on your Trello account";
         ofNullable(newCard).ifPresent(
-                card -> emailService.send(new Mail(adminConfig.getAdminMail(), CC, SUBJECT,
-                        "New card " + card.getName() + " has been created"), MailCreatorService.NEW_TRELLO_CARD_MAIL));
+                //for template avaiable-tasks-count-mail.html
+                //card -> emailSchedulerV2.sendInformationEmail()
+
+               card -> emailService.send(new Mail(adminConfig.getAdminMail(), CC, SUBJECT,
+                       "New card " + card.getName() + " has been created"), MailCreatorService.NEW_TRELLO_CARD_MAIL)
+        );
         return newCard;
     }
 }
