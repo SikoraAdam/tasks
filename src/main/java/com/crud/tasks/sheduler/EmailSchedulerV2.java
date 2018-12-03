@@ -16,8 +16,8 @@ public class EmailSchedulerV2 {
     private static final String SUBJECT = "Tasks: Once a day email";
     private static final String CC = "adam.x.sikora@gmail.com";
     private static final int ONE_TASK = 1;
-    private static final String SINGLE_TASK = "task";
-    private static final String MULTIPLE_TASK = "tasks";
+    private static final String SINGLE_TASK = " task";
+    private static final String MULTIPLE_TASK = " tasks";
 
     private SimpleEmailService emailService;
     private TaskRepository taskRepository;
