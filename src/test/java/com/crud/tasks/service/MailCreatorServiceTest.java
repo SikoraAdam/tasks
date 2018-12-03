@@ -1,11 +1,15 @@
 package com.crud.tasks.service;
 
 import com.crud.tasks.config.AdminConfig;
+import com.crud.tasks.domain.Task;
 import com.crud.tasks.repository.TaskRepository;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.thymeleaf.TemplateEngine;
+
+import java.util.Arrays;
 
 import static org.mockito.Mockito.when;
 
@@ -21,6 +25,9 @@ public class MailCreatorServiceTest {
     @Mock
     private TaskRepository taskRepository;
 
+    @Autowired
+    MailCreatorService mailCreatorService;
+
     @Test
     public void tasksCountEmailTest() {
 
@@ -34,8 +41,13 @@ public class MailCreatorServiceTest {
         when(adminConfig.getCompanyPhone()).thenReturn("mockCompanyPhone");
         when(adminConfig.getCompanyGoal()).thenReturn("mockCompanyGoal");
 
+        Task task = new Task();
+        task.setTitle("mockTitle");
+        task.setContent("mockContent");
+        task.setId(123L);
+        when(taskRepository.findAll()).thenReturn(Arrays.asList(task));
+
         //When
-        MailCreatorService mailCreatorService = new MailCreatorService();
         String template = mailCreatorService.tasksCountEmail(message);
 
         //Then
