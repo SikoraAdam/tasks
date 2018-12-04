@@ -29,6 +29,7 @@ public class EmailScheduler {
     /**
      *  zakomentowane żeby nie chodziło w nieskończoność
      */
+    // Zmiana w Module_24.3
     //@Scheduled(fixedDelay = 10000)
     public void sendInformationEmail() {
         long size = taskRepository.count();

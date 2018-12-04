@@ -1,29 +1,29 @@
 package com.crud.tasks.service;
 
 import com.crud.tasks.config.AdminConfig;
-import com.crud.tasks.domain.*;
+import com.crud.tasks.domain.Task;
 import com.crud.tasks.repository.TaskRepository;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.thymeleaf.TemplateEngine;
 
 import java.util.Arrays;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
-@RunWith(SpringRunner.class)
-public class TrelloServiceTest {
+public class MailCreatorServiceTest {
 
-    @MockBean
-    AdminConfig adminConfig;
+    @Mock
+    @Qualifier("templateEngine")
+    private TemplateEngine templateEngine;
 
-    @MockBean
-    TaskRepository taskRepository;
+    @Mock
+    private AdminConfig adminConfig;
+
+    @Mock
+    private TaskRepository taskRepository;
 
     @Autowired
     MailCreatorService mailCreatorService;
@@ -32,6 +32,7 @@ public class TrelloServiceTest {
     public void tasksCountEmailTest() {
 
         //Given
+
         String message = "test message";
         when(taskRepository.count()).thenReturn(1L);
         when(adminConfig.getAdminName()).thenReturn("mockAdminName");
@@ -51,13 +52,5 @@ public class TrelloServiceTest {
 
         //Then
 
-
-        //Then
-        assertThat(template.contains("mockAdminName")).isTrue();
-        assertThat(template.contains("mockCompanyName")).isTrue();
-        assertThat(template.contains("mockCompanyEmail")).isTrue();
-        assertThat(template.contains("mockCompanyPhone")).isTrue();
-        assertThat(template.contains("mockCompanyGoal")).isTrue();
-        assertThat(template.contains("test message")).isTrue();
     }
 }
