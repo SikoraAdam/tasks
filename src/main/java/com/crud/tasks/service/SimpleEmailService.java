@@ -22,10 +22,10 @@ public class SimpleEmailService {
     @Autowired
     private MailCreatorService mailCreatorService;
 
-    public void send(final Mail mail, final String mailType) {
+    public void send(final Mail mail) {
         LOGGER.info("Starting e-mail preperation...");
         try {
-            javaMailSender.send(createMimeMessage(mail, mailType));
+            javaMailSender.send(createMimeMessage(mail));
             LOGGER.info("Email has been sent.");
         } catch (MailException e) {
             LOGGER.error("Failed to process email sending: ", e.getMessage(), e);
@@ -44,14 +44,13 @@ public class SimpleEmailService {
     }
 
 
-    private MimeMessagePreparator createMimeMessage(final Mail mail, final String mailType) {
+    private MimeMessagePreparator createMimeMessage(final Mail mail) {
         return mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(mail.getMailTo());
             messageHelper.setCc(mail.getToCc());
             messageHelper.setSubject(mail.getSubject());
-            messageHelper.setText(mailCreatorService.makeEmail(mail.getMessage(), mailType), true);
+            messageHelper.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()), true);
         };
     }
-
 }
