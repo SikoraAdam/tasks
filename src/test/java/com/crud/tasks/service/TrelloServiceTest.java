@@ -1,46 +1,63 @@
 package com.crud.tasks.service;
 
 import com.crud.tasks.config.AdminConfig;
-import com.crud.tasks.domain.CreatedTrelloCardDto;
-import com.crud.tasks.domain.TrelloBoardDto;
-import com.crud.tasks.domain.TrelloCardDto;
-import com.crud.tasks.domain.TrelloListDto;
-import com.crud.tasks.trello.client.TrelloClient;
+import com.crud.tasks.domain.*;
+import com.crud.tasks.repository.TaskRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@SpringBootTest
+@RunWith(SpringRunner.class)
 public class TrelloServiceTest {
 
-    @InjectMocks
-    private TrelloService trelloService;
+    @MockBean
+    AdminConfig adminConfig;
 
-    @Mock
-    private TrelloClient trelloClient;
+    @MockBean
+    TaskRepository taskRepository;
+
+    @Autowired
+    MailCreatorService mailCreatorService;
 
     @Test
-    public void fetchTrelloBoardsTest() {
+    public void tasksCountEmailTest() {
 
-        // Given
-        List<TrelloListDto> trelloLists = new ArrayList<>();
-        trelloLists.add(new TrelloListDto("1", "test_list", false));
-        List<TrelloBoardDto> trelloBoards = new ArrayList<>();
-        trelloBoards.add(new TrelloBoardDto("1", "test", trelloLists));
-        when(trelloClient.getTrelloBoards()).thenReturn(trelloBoards);
+        //Given
+        String message = "test message";
+        when(taskRepository.count()).thenReturn(1L);
+        when(adminConfig.getAdminName()).thenReturn("mockAdminName");
+        when(adminConfig.getCompanyName()).thenReturn("mockCompanyName");
+        when(adminConfig.getCompanyEmail()).thenReturn("mockCompanyEmail");
+        when(adminConfig.getCompanyPhone()).thenReturn("mockCompanyPhone");
+        when(adminConfig.getCompanyGoal()).thenReturn("mockCompanyGoal");
 
-        // When
-        List<TrelloBoardDto> result = trelloService.fetchTrelloBoards();
+        Task task = new Task();
+        task.setTitle("mockTitle");
+        task.setContent("mockContent");
+        task.setId(123L);
+        when(taskRepository.findAll()).thenReturn(Arrays.asList(task));
 
-        // Then
-        assertEquals(trelloBoards, result);
+        //When
+        String template = mailCreatorService.tasksCountEmail(message);
+
+        //Then
+
+
+        //Then
+        assertThat(template.contains("mockAdminName")).isTrue();
+        assertThat(template.contains("mockCompanyName")).isTrue();
+        assertThat(template.contains("mockCompanyEmail")).isTrue();
+        assertThat(template.contains("mockCompanyPhone")).isTrue();
+        assertThat(template.contains("mockCompanyGoal")).isTrue();
+        assertThat(template.contains("test message")).isTrue();
     }
 }
