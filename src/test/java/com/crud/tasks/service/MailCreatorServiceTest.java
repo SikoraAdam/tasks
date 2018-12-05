@@ -4,26 +4,26 @@ import com.crud.tasks.config.AdminConfig;
 import com.crud.tasks.domain.Task;
 import com.crud.tasks.repository.TaskRepository;
 import org.junit.Test;
-import org.mockito.Mock;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.thymeleaf.TemplateEngine;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
+@SpringBootTest
+@RunWith(SpringRunner.class)
 public class MailCreatorServiceTest {
 
-    @Mock
-    @Qualifier("templateEngine")
-    private TemplateEngine templateEngine;
+    @MockBean
+    AdminConfig adminConfig;
 
-    @Mock
-    private AdminConfig adminConfig;
-
-    @Mock
-    private TaskRepository taskRepository;
+    @MockBean
+    TaskRepository taskRepository;
 
     @Autowired
     MailCreatorService mailCreatorService;
@@ -32,7 +32,6 @@ public class MailCreatorServiceTest {
     public void tasksCountEmailTest() {
 
         //Given
-
         String message = "test message";
         when(taskRepository.count()).thenReturn(1L);
         when(adminConfig.getAdminName()).thenReturn("mockAdminName");
@@ -51,6 +50,11 @@ public class MailCreatorServiceTest {
         String template = mailCreatorService.tasksCountEmail(message);
 
         //Then
-
+        assertThat(template.contains("mockAdminName")).isTrue();
+        assertThat(template.contains("mockCompanyName")).isTrue();
+        assertThat(template.contains("mockCompanyEmail")).isTrue();
+        assertThat(template.contains("mockCompanyPhone")).isTrue();
+        assertThat(template.contains("mockCompanyGoal")).isTrue();
+        assertThat(template.contains("test message")).isTrue();
     }
 }

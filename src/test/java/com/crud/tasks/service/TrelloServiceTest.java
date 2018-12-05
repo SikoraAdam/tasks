@@ -3,8 +3,13 @@ package com.crud.tasks.service;
 import com.crud.tasks.config.AdminConfig;
 import com.crud.tasks.domain.*;
 import com.crud.tasks.repository.TaskRepository;
+import com.crud.tasks.trello.client.TrelloClient;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -13,51 +18,42 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
-@RunWith(SpringRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class TrelloServiceTest {
 
-    @MockBean
-    AdminConfig adminConfig;
+    @InjectMocks
+    private TrelloService trelloService;
 
-    @MockBean
-    TaskRepository taskRepository;
+    @Mock
+    private TrelloClient trelloClient;
 
-    @Autowired
-    MailCreatorService mailCreatorService;
+    @Mock
+    private SimpleEmailService emailService;
+
+    @Mock
+    private AdminConfig adminConfig;
 
     @Test
-    public void tasksCountEmailTest() {
-
+    public void shouldCreateTrelloCard() {
         //Given
-        String message = "test message";
-        when(taskRepository.count()).thenReturn(1L);
-        when(adminConfig.getAdminName()).thenReturn("mockAdminName");
-        when(adminConfig.getCompanyName()).thenReturn("mockCompanyName");
-        when(adminConfig.getCompanyEmail()).thenReturn("mockCompanyEmail");
-        when(adminConfig.getCompanyPhone()).thenReturn("mockCompanyPhone");
-        when(adminConfig.getCompanyGoal()).thenReturn("mockCompanyGoal");
+        CreatedTrelloCardDto createdTrelloCardDto = new CreatedTrelloCardDto("1", "test_name", "test_url");
+        TrelloCardDto trelloCardDto = new TrelloCardDto("test_name", "test_desc", "1", "2");
+        Mail mail = new Mail("to", "test_subject", "test_message", "toCc");
 
-        Task task = new Task();
-        task.setTitle("mockTitle");
-        task.setContent("mockContent");
-        task.setId(123L);
-        when(taskRepository.findAll()).thenReturn(Arrays.asList(task));
+        Mockito.when(trelloClient.createNewCard(trelloCardDto)).thenReturn(createdTrelloCardDto);
+        Mockito.doNothing().when(emailService).send(mail, MailCreatorService.NEW_TRELLO_CARD_MAIL);
 
         //When
-        String template = mailCreatorService.tasksCountEmail(message);
+        CreatedTrelloCardDto returnedCreatedTrelloCardDto = trelloService.createTrelloCard(trelloCardDto);
 
         //Then
-
-
-        //Then
-        assertThat(template.contains("mockAdminName")).isTrue();
-        assertThat(template.contains("mockCompanyName")).isTrue();
-        assertThat(template.contains("mockCompanyEmail")).isTrue();
-        assertThat(template.contains("mockCompanyPhone")).isTrue();
-        assertThat(template.contains("mockCompanyGoal")).isTrue();
-        assertThat(template.contains("test message")).isTrue();
+        assertNotNull(returnedCreatedTrelloCardDto);
+        assertEquals("1", returnedCreatedTrelloCardDto.getId());
+        assertEquals("test_name", returnedCreatedTrelloCardDto.getName());
+        assertEquals("test_url", returnedCreatedTrelloCardDto.getShortUrl());
     }
+
 }

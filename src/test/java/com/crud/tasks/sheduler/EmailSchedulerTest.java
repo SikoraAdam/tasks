@@ -3,6 +3,7 @@ package com.crud.tasks.sheduler;
 import com.crud.tasks.config.AdminConfig;
 import com.crud.tasks.domain.Mail;
 import com.crud.tasks.repository.TaskRepository;
+import com.crud.tasks.service.MailCreatorService;
 import com.crud.tasks.service.SimpleEmailService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,12 +47,12 @@ public class EmailSchedulerTest {
         emailScheduler.sendInformationEmail();
 
         //Then
-        verify(simpleEmailService, times(1)).send(mailArgumentCaptor.capture());
+        verify(simpleEmailService, times(1)).send(mailArgumentCaptor.capture(), MailCreatorService.AVAILABLE_TASKS_MAIL);
         Mail captoredMail = mailArgumentCaptor.getValue();
         assertThat(captoredMail.getMailTo()).isEqualTo("mockAdminMail");
         assertThat(captoredMail.getToCc()).isEqualTo("adam.x.sikora@gmail.com");
         assertThat(captoredMail.getSubject()).isEqualTo("Tasks: Once a day email");
-        assertThat(captoredMail.getMessage()).isEqualTo("Currently in database you got: 1task");
+        assertThat(captoredMail.getMessage()).isEqualTo("Currently in database you got: 1 task");
     }
 
     @Test
@@ -65,12 +66,12 @@ public class EmailSchedulerTest {
         emailScheduler.sendInformationEmail();
 
         //Then
-        verify(simpleEmailService, times(1)).send(mailArgumentCaptor.capture());
+        verify(simpleEmailService, times(1)).send(mailArgumentCaptor.capture(), MailCreatorService.AVAILABLE_TASKS_MAIL);
         Mail captoredMail = mailArgumentCaptor.getValue();
         assertThat(captoredMail.getMailTo()).isEqualTo("mockAdminMail");
         assertThat(captoredMail.getToCc()).isEqualTo("adam.x.sikora@gmail.com");
         assertThat(captoredMail.getSubject()).isEqualTo("Tasks: Once a day email");
-        assertThat(captoredMail.getMessage()).isEqualTo("Currently in database you got: 123tasks");
+        assertThat(captoredMail.getMessage()).isEqualTo("Currently in database you got: 123 tasks");
     }
 
 }
