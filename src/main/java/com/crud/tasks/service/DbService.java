@@ -34,9 +34,8 @@ public class DbService {
             return repository.findById(id).isPresent();
     }
 
-    @Transactional
     public void deleteTask(final Long id) {
-        repository.deleteById(id);
+        repository.delete(id);
     }
 }
 
